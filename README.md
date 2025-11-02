@@ -67,6 +67,27 @@ Toy Universe is designed to provide a seamless online toy store experience where
 
 ---
 
+## File structure
+
+src/
+├─ components/
+│ ├─ Navbar.jsx
+│ ├─ CarCard.jsx
+│ ├─ BookingCard.jsx
+│ └─ Footer.jsx
+├─ pages/
+│ ├─ Home.jsx
+│ ├─ Cars.jsx
+│ ├─ CarDetails.jsx
+│ ├─ AddCar.jsx
+│ ├─ MyBookings.jsx
+│ ├─ Login.jsx
+│ └─ Dashboard.jsx
+├─ context/AuthContext.jsx
+├─ hooks/useCars.js
+├─ App.jsx
+└─ main.jsx
+
 ## 🧠 Tech Stack
 
 **Frontend:** React, Tailwind CSS, DaisyUI  

@@ -7,10 +7,10 @@ import Register from "../../Component/AuthRegLogin/Register/Register";
 import Login from "../../Component/AuthRegLogin/Login/Login";
 import Profile from "../../Pages/Profile/Profile";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
-import ToyCardDetails from "../../Component/Toys/ToyCardDetails/ToyCardDetails";
 import Feature from "../../Pages/Feature/Feature";
 import ResetPass from "../../Component/AuthRegLogin/ResetPass/ResetPass";
 import About from "../../Pages/About/About";
+import AddCar from "../../Pages/Cars/AddCar/AddCar";
 
 const router = createBrowserRouter([
   {
@@ -34,16 +34,16 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/register",
-        Component: Register,
-      },
-      {
-        path: "/toy-details/:id",
+        path: "/add-car",
         element: (
           <PrivateRoute>
-            <ToyCardDetails />
+            <AddCar />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/register",
+        Component: Register,
       },
 
       {
