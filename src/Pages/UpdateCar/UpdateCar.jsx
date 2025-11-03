@@ -1,23 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 const UpdateCar = () => {
   const car = useLoaderData(); // Loaded car data
+  const navigate = useNavigate();
 
   console.log(car);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Updated Car Data:");
-    // TODO: API call to update the car
+    const formData = new FormData(e.target);
+    const updatedCar = Object.fromEntries(formData.entries());
+    console.log(updatedCar);
+
+    // update to db
+    fetch(`http://localhost:3000/cars/${car._id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedCar),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Car Updated",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+        navigate(`/cars/${car._id}`);
+      });
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center py-20 px-4 md:px-12">
       {/* Background Image */}
       <img
-        src="https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGNhciUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600"
+        src="https://images.unsplash.com/photo-1630053561093-3b52fb8a415c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGNhciUyMGF0JTIwbmlnaHR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600"
         alt="Update Car Background"
         className="absolute inset-0 w-full h-full object-cover"
       />
@@ -37,7 +60,7 @@ const UpdateCar = () => {
         </h2>
 
         <form
-          //   onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {/* Name */}

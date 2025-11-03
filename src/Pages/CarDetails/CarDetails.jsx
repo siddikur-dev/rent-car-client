@@ -13,7 +13,7 @@ const CarDetails = () => {
       className="bg-no-repeat bg-cover bg-center w-full min-h-screen scroll-pt-28"
       style={{
         backgroundImage:
-          "url('https://plus.unsplash.com/premium_photo-1736151101112-51574226fde6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjF8fHRlc2xhJTIwY2FyJTIwYXQlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600')",
+          "url('https://media.istockphoto.com/id/2204254291/photo/3d-rendering-of-white-neon-glowing-spaceship-corridor-hallway-dark-background-scene-for.webp?a=1&b=1&s=612x612&w=0&k=20&c=dYPVDyYIk7I8BGT4ABcxVsgYiJpCvqEPJd3DQjPd7Lo=')",
       }}
     >
       <div className="container mx-auto px-4 py-28 text-white">
