@@ -14,6 +14,7 @@ import AddCar from "../../Pages/Cars/AddCar/AddCar";
 import CarCard from "../../Component/CarCard/CarCard";
 import AllCars from "../../Component/AllCars/AllCars";
 import CarDetails from "../../Pages/CarDetails/CarDetails";
+import UpdateCar from "../../Pages/UpdateCar/UpdateCar";
 
 const router = createBrowserRouter([
   {
@@ -49,8 +50,19 @@ const router = createBrowserRouter([
         loader: ({ params }) =>
           fetch(`http://localhost:3000/cars/${params.id}`),
         element: (
-          // <PrivateRoute>
-          <CarDetails />
+          <PrivateRoute>
+            <CarDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-car/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/cars/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <UpdateCar />
+          </PrivateRoute>
         ),
       },
       {

@@ -1,78 +1,105 @@
 import React from "react";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 const CarDetails = () => {
   const car = useLoaderData();
 
+  const handleDelete = () => {
+    // Add your delete logic here (API call to delete)
+    console.log("Delete car:", car.name);
+  };
   return (
-    <div className="container mx-auto px-4 my-24">
-      <div className="bg-base-200 rounded-2xl shadow-lg overflow-hidden md:flex md:gap-6">
-        {/* Car Image */}
-        <div className="md:w-1/2">
-          <img
-            src={car.image}
-            alt={car.name}
-            className="w-full h-full object-cover md:h-auto"
-          />
-        </div>
-
-        {/* Car Info */}
-        <div className="md:w-1/2 p-6 flex flex-col justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-secondary mb-2">
-              {car.name}
-            </h2>
-            <p className="text-lg text-gray-600 mb-4">{car.brand}</p>
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-yellow-500 font-semibold">
-                ★ {car.rating}
-              </span>
-              <span
-                className={`${
-                  car.available ? "text-green-500" : "text-red-500"
-                } font-medium`}
-              >
-                {car.available ? "Available" : "Not Available"}
-              </span>
-            </div>
-            <p className="text-gray-700 mb-6">{car.description}</p>
-
-            {/* Features */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="flex flex-col">
-                <span className="font-semibold text-gray-600">Fuel</span>
-                <span className="text-gray-800">{car.fuel_type}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-gray-600">Seats</span>
-                <span className="text-gray-800">{car.seats}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-gray-600">
-                  Transmission
-                </span>
-                <span className="text-gray-800">{car.transmission}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-gray-600">Location</span>
-                <span className="text-gray-800">{car.location}</span>
-              </div>
-            </div>
+    <div
+      className="bg-no-repeat bg-cover bg-center w-full min-h-screen scroll-pt-28"
+      style={{
+        backgroundImage:
+          "url('https://plus.unsplash.com/premium_photo-1736151101112-51574226fde6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjF8fHRlc2xhJTIwY2FyJTIwYXQlMjBuaWdodHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600')",
+      }}
+    >
+      <div className="container mx-auto px-4 py-28 text-white">
+        <div className="rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row md:gap-8 backdrop-blur-xs p-4 ">
+          {/* Car Image */}
+          <div className="md:w-1/2 flex-shrink-0">
+            <img
+              src={car.image}
+              alt={car.name}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            />
           </div>
 
-          {/* Rent & Action */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          {/* Car Info */}
+          <div className="md:w-1/2 p-6 flex flex-col justify-between">
             <div>
-              <p className="text-xl font-bold text-secondary">
-                ${car.rent_per_day} / day
-              </p>
-              <p className="text-gray-500 text-sm">
-                Total for {car.quantity} day(s): ${car.totalPrice}
-              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">
+                {car.name}
+              </h2>
+              <p className="text-lg   mb-4">{car.brand}</p>
+
+              <div className="flex flex-wrap items-center gap-4 mb-4">
+                <span className="  font-semibold flex items-center">
+                  ★ {car.rating}
+                </span>
+                <span
+                  className={`${
+                    car.available ? "text-green-500" : "text-red-500"
+                  } font-medium`}
+                >
+                  {car.available ? "Available" : "Not Available"}
+                </span>
+              </div>
+
+              <p className="  mb-6">{car.description}</p>
+
+              {/* Features Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <div className="flex flex-col">
+                  <span className="font-semibold  ">Fuel</span>
+                  <span className=" ">{car.fuel_type}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold  ">Seats</span>
+                  <span className=" ">{car.seats}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold  ">Transmission</span>
+                  <span className=" ">{car.transmission}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold  ">Location</span>
+                  <span className=" ">{car.location}</span>
+                </div>
+              </div>
             </div>
-            <button className="bg-primary text-white px-6 py-3 rounded-lg shadow-md hover:bg-primary/90 transition">
-              Book Now
-            </button>
+
+            {/* Rent & Action Buttons */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p className="text-xl font-bold text-secondary">
+                  ${car.rent_per_day} / day
+                </p>
+                <p className="  text-sm">
+                  Total for {car.quantity} day(s): ${car.totalPrice}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-3 md:mt-0">
+                <button className="bg-primary btn btn-primary transition">
+                  Book Now
+                </button>
+                <Link
+                  to={`/update-car/${car._id}`}
+                  className=" btn-secondary btn transition"
+                >
+                  Update
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="btn btn-error btn-outline"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
