@@ -11,6 +11,8 @@ import Feature from "../../Pages/Feature/Feature";
 import ResetPass from "../../Component/AuthRegLogin/ResetPass/ResetPass";
 import About from "../../Pages/About/About";
 import AddCar from "../../Pages/Cars/AddCar/AddCar";
+import CarCard from "../../Component/CarCard/CarCard";
+import AllCars from "../../Component/AllCars/AllCars";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,11 @@ const router = createBrowserRouter([
             <AddCar />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/all-cars",
+        loader: () => fetch("http://localhost:3000/cars"),
+        Component: AllCars,
       },
       {
         path: "/register",

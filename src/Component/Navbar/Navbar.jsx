@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Cars", path: "/cars" },
+    { name: "All Cars", path: "/all-cars" },
     { name: "Add Car", path: "/add-car" },
     { name: "My Bookings", path: "/my-bookings" },
   ];
@@ -20,7 +20,7 @@ const Navbar = () => {
       transition={{ duration: 0.7 }}
       className="fixed top-0 left-0 w-full text-white z-50 bg-transparent backdrop-blur-sm"
     >
-      <div className="container mx-auto flex justify-between items-center px-6 md:px-16 py-5">
+      <div className="container mx-auto flex justify-between items-center px-6 md:px-16 py-5 text-secondary">
         {/* Logo */}
         <NavLink to="/" className="text-2xl font-bold tracking-wide logo-font">
           Rent<span className="text-primary"> a </span>Car

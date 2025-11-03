@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AddCar = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +19,7 @@ const AddCar = () => {
     quantity: "",
   });
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -27,11 +30,30 @@ const AddCar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const totalPrice =
-      Number(formData.rent_per_day) * Number(formData.quantity);
-    const newCar = { ...formData, totalPrice };
-    console.log(newCar);
+    const formData = new FormData(event.target);
+    const newCar = Object.fromEntries(formData.entries());
+    // Add a created time field
+    newCar.createdAt = new Date().toISOString();
     // TODO: send newCar to your backend using fetch()
+    fetch("http://localhost:3000/cars", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newCar),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "New car has been added",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+      });
   };
 
   return (
@@ -70,6 +92,7 @@ const AddCar = () => {
             for your car’s safety and comfort.
           </motion.p>
         </div>
+        {/*  */}
       </div>
       {/* --------- */}
       <div className="relative min-h-screen  flex items-center justify-center py-20 px-4 md:px-12">
@@ -268,14 +291,14 @@ const AddCar = () => {
 
             {/* Submit Button */}
             <div className="md:col-span-2 text-center mt-4">
-              <motion.button
+              <button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="px-8 py-3 bg-primary text-white font-semibold rounded-full shadow-lg hover:bg-primary/80 transition"
+                className="px-8 py-3 bg-primary cursor-pointer text-white font-semibold rounded-full shadow-lg hover:bg-primary/80 transition"
               >
                 Add Car
-              </motion.button>
+              </button>
             </div>
           </form>
         </motion.div>

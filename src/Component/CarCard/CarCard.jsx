@@ -1,53 +1,47 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { FaStar, FaCarSide, FaUsers } from "react-icons/fa";
 
-const AddCar = () => {
+const CarCard = ({ car }) => {
+  console.log(car);
+  const { image, name, rating, seats } = car;
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-base-200">
-      {/* Background Image */}
-      <img
-        src="https://images.unsplash.com/photo-1618908581448-fd8a1e12b9a5?auto=format&fit=crop&w=1600&q=80"
-        alt="Car"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 150 }}
+      className="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-all w-full max-w-sm mx-auto"
+    >
+      {/* Car Image */}
+      <div className="relative">
+        <img src={image} alt={name} className="w-full h-56 object-cover" />
+        <div className="absolute top-2 right-2 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+          <div className="flex items-center gap-1">
+            <FaStar className="text-yellow-400" />
+            {rating}
+          </div>
+        </div>
+      </div>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60"></div>
+      {/* Card Content */}
+      <div className="p-5 space-y-3">
+        <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <FaCarSide className="text-primary" /> {name}
+        </h2>
 
-      {/* Content */}
-      <div className="relative z-10 text-white px-6 md:px-12 text-center">
-        <motion.h1
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="text-4xl md:text-6xl font-bold mb-6"
-        >
-          Add Your Car to{" "}
-          <span className="text-primary">Rent A Car</span> Fleet
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-lg max-w-2xl mx-auto text-gray-200 mb-8"
-        >
-          Have a car sitting idle? List it with us and start earning today!
-          We offer secure rentals, verified customers, and complete management
-          for your car’s safety and comfort.
-        </motion.p>
+        <p className="flex items-center gap-2 text-gray-600">
+          <FaUsers className="text-secondary" /> Seats: {seats}
+        </p>
 
         <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 1, type: "spring", stiffness: 120 }}
-          className="px-8 py-3 bg-white text-black font-semibold rounded-full shadow-lg hover:bg-gray-100 transition"
+          whileHover={{ scale: 1.05 }}
+          className="mt-3 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary/90 transition"
         >
-          Book Now
+          View More →
         </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default AddCar;
+export default CarCard;

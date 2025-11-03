@@ -25,17 +25,12 @@ body {
     name: "light";
     default: true;
 
-    /* 🎨 Toy Universe Minimal Light Theme */
     --color-primary: #00bcd4;
-    /* Coral Red */
-    --color-secondary: #ff4081;
-    /* Soft Yellow */
+    --color-secondary: #6b9bdd;
     --bg-base-100: #FFF8F0;
-    /* Warm off-white background */
 }
 
 
 a.active {
-    color: #bf382c;
-    /* Highlight active links with primary */
+    color: #6b9bdd;
 }
