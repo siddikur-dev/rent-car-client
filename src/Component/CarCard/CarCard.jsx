@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaStar, FaCarSide, FaUsers } from "react-icons/fa";
+import { Link } from "react-router";
 
 const CarCard = ({ car }) => {
-  console.log(car);
-  const { image, name, rating, seats } = car;
+  const { image, name, rating, seats, _id } = car;
 
   return (
     <motion.div
@@ -32,13 +32,12 @@ const CarCard = ({ car }) => {
         <p className="flex items-center gap-2 text-gray-600">
           <FaUsers className="text-secondary" /> Seats: {seats}
         </p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className="mt-3 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary/90 transition"
+        <Link
+          to={`/cars/${_id}`}
+          className="mt-3 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary/90 transition cursor-pointer flex justify-center"
         >
           View More →
-        </motion.button>
+        </Link>
       </div>
     </motion.div>
   );
