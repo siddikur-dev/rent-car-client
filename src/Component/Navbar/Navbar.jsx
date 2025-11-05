@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const { user, signOutUser } = useAuth();
+console.log(user);
   const navItems = [
     { name: "Home", path: "/" },
     { name: "All Cars", path: "/all-cars" },
-    { name: "Add Car", path: "/add-car" },
-    { name: "My Bookings", path: "/my-bookings" },
+    // 🔹 নিচেরগুলো শুধু তখনই দেখাবে যখন user থাকবে
+    ...(user
+      ? [
+          { name: "Add Car", path: "/add-car" },
+          { name: "My Bookings", path: "/my-bookings" },
+        ]
+      : []),
   ];
 
   return (
@@ -43,14 +50,22 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Desktop Contact Button */}
-        <Link
-          to="/login"
-          whileHover={{ scale: 1.05 }}
-          className="hidden md:flex items-center gap-2 px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100"
-        >
-          Login <span className="text-xl">→</span>
-        </Link>
+        {/* Desktop Auth Button */}
+        {user ? (
+          <button
+            onClick={signOutUser}
+            className="hidden md:flex items-center gap-2 px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="hidden md:flex items-center gap-2 px-5 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100"
+          >
+            Login <span className="text-xl">→</span>
+          </Link>
+        )}
 
         {/* Mobile Menu Toggle */}
         <div
@@ -89,9 +104,25 @@ const Navbar = () => {
                 </NavLink>
               ))}
 
-              <button className="mt-3 px-6 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100">
-                Contact
-              </button>
+              {user ? (
+                <button
+                  onClick={() => {
+                    signOutUser();
+                    setMenuOpen(false);
+                  }}
+                  className="mt-3 px-6 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="mt-3 px-6 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-100"
+                >
+                  Login
+                </Link>
+              )}
             </ul>
           </motion.div>
         )}

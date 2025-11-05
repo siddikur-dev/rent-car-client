@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 import CarCard from "../CarCard/CarCard";
+import { motion } from "framer-motion";
 
 const AllCars = () => {
   const cars = useLoaderData();
@@ -19,9 +20,16 @@ const AllCars = () => {
 
         {/* --- Center Content --- */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 md:px-12 space-y-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-white heading-font">
-            Explore All <span className="text-primary"> Cars</span>
-          </h2>
+          <motion.h1
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-4xl md:text-6xl font-bold mb-6"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white heading-font">
+              Explore All <span className="text-primary"> Cars</span>
+            </h2>
+          </motion.h1>
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
             Choose from a wide range of modern, comfortable, and stylish cars
             for your next journey.

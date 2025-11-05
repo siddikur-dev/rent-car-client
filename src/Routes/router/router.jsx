@@ -11,7 +11,6 @@ import Feature from "../../Pages/Feature/Feature";
 import ResetPass from "../../Component/AuthRegLogin/ResetPass/ResetPass";
 import About from "../../Pages/About/About";
 import AddCar from "../../Pages/Cars/AddCar/AddCar";
-import CarCard from "../../Component/CarCard/CarCard";
 import AllCars from "../../Component/AllCars/AllCars";
 import CarDetails from "../../Pages/CarDetails/CarDetails";
 import UpdateCar from "../../Pages/UpdateCar/UpdateCar";

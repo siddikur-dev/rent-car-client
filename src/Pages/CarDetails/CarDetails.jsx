@@ -1,12 +1,40 @@
 import React from "react";
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const CarDetails = () => {
+  const navigate = useNavigate();
   const car = useLoaderData();
 
-  const handleDelete = () => {
+  const handleDelete = (_id) => {
     // Add your delete logic here (API call to delete)
-    console.log("Delete car:", car.name);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/cars/${_id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Car Deleted",
+              showConfirmButton: false,
+              timer: 1200,
+            });
+            navigate(`/all-cars`);
+          });
+      }
+    });
   };
   return (
     <div
@@ -93,7 +121,7 @@ const CarDetails = () => {
                   Update
                 </Link>
                 <button
-                  onClick={handleDelete}
+                  onClick={() => handleDelete(car._id)}
                   className="btn btn-error btn-outline"
                 >
                   Delete

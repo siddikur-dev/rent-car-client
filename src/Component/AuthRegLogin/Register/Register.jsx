@@ -1,194 +1,166 @@
-import React, { useContext, useState } from "react";
-import { FcGoogle } from "react-icons/fc"; // Google icon
+import React, { use } from "react";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthContext/AuthContext";
-import { VscEyeClosed } from "react-icons/vsc";
-import { FaRegEye } from "react-icons/fa";
-import { sendEmailVerification, updateProfile } from "firebase/auth";
-import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 
 const Register = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  // get from authProvider/authContext
-  const { createUser, signInGoogle } = useContext(AuthContext);
+  const { createUser } = use(AuthContext);
+  // const axiosSecure = useAxiosSecure();
+
   const navigate = useNavigate();
 
-  // Create User Mail Pass
-  const createUserMailPass = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    const displayName = e.target.displayName.value;
-    const photoURL = e.target.photoURL.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const form = e.target;
+    const formData = new FormData(form);
+    const { email, password, confirm_password, ...restUser } =
+      Object.fromEntries(formData);
 
-    // Password Validation Checked
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-    if (!regex.test(password)) {
-      return toast.error(
-        "Password must contain at least 6 characters, one uppercase, one lowercase, one number"
-      );
+    if (password !== confirm_password) {
+      Swal.fire({
+        icon: "error",
+        title: "Password mismatch",
+        text: "Please confirm your password correctly.",
+      });
+      return;
     }
 
-    // Create User
+    // Firebase Registration
     createUser(email, password)
-      .then((res) => {
-        // Photo and email update
-        updateProfile(res.user, { displayName, photoURL })
-          .then(() => {
-            // email verification
-            sendEmailVerification(res.user)
-              .then(() => {
-                toast.success("User Created Successfully!");
-                navigate("/");
-              })
-              .catch((error) => {
-                console.log("Email verification error", error);
-                toast.error(`Error: ${error.message || error}`);
-              });
-          })
-          .catch((error) => {
-            console.log("Profile update error", error);
-            toast.error(`Error: ${error.message || error}`);
-          });
-      })
-      .catch((error) => {
-        console.log("Create user error", error);
-        toast.error("This Account Already Registered");
-      });
-  };
-
-  // Sign In Google
-  const signWithGoogle = () => {
-    signInGoogle()
       .then((result) => {
-        const user = result.user;
-        toast.success("User sign in successfully");
+        console.log(result.user);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "User has Created",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/");
       })
       .catch((error) => {
-        toast.error("Failed To Google Sign");
-        console.log("Sign in google", error);
+        console.log(error);
       });
   };
+
   return (
-    <section className="min-h-screen flex items-center justify-center bg-base-200 py-12 px-4">
-      {/* Helmet */}
-      <title>Register - Toy Universe </title>
-      <div className="bg-base-100 shadow-xl rounded-xl w-full max-w-md p-8">
-        {/* Heading */}
-        <h2 className="text-3xl font-bold text-center text-primary mb-6">
-          Create an Account
+    <div className="relative min-h-screen flex items-center justify-center py-20 px-4 md:px-12">
+      {/* Background Image */}
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_KaqfaPPABMxgNCmUC1ghzDu-hfNcleNx5ukXhi-ThhKxdBnmvM-UUpefb3hDzPmGB9kL&s"
+        alt="Register Background"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60"></div>
+
+      {/* Form Container */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-3xl text-white rounded-2xl shadow-lg p-8 md:p-10 backdrop-blur-md"
+      >
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Create an <span className="text-primary">Account</span>
         </h2>
 
-        {/* Form */}
-        <form onSubmit={createUserMailPass} className="space-y-4">
-          {/* Name field */}
+        <form
+          onSubmit={handleRegister}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          {/* Name */}
           <div>
-            <label className="block text-base-content font-medium mb-2">
-              Full Name
-            </label>
+            <label className="block font-medium mb-2">Full Name</label>
             <input
               type="text"
-              name="displayName"
-              placeholder="Enter your full name"
-              className="input input-bordered w-full focus:border-primary focus:ring-primary"
+              name="name"
+              placeholder="John Doe"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
               required
-            />
-          </div>
-
-          {/* Photo field */}
-          <div>
-            <label className="block text-base-content font-medium mb-2">
-              Photo URL
-            </label>
-            <input
-              name="photoURL"
-              type="text"
-              placeholder="Enter your photo URL"
-              className="input input-bordered w-full focus:border-primary focus:ring-primary"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-base-content font-medium mb-2">
-              Email Address
-            </label>
+            <label className="block font-medium mb-2">Email Address</label>
             <input
               type="email"
               name="email"
-              placeholder="Enter your email"
-              className="input input-bordered w-full focus:border-primary focus:ring-primary"
+              placeholder="example@gmail.com"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-base-content font-medium mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                className="input input-bordered w-full pr-10 focus:border-primary focus:ring-primary"
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-3  cursor-pointer "
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <VscEyeClosed /> : <FaRegEye />}
-              </button>
-            </div>
+            <label className="block font-medium mb-2">Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
           </div>
 
-          {/* Terms and condition */}
-          <div className="flex items-center gap-2">
+          {/* Confirm Password */}
+          <div>
+            <label className="block font-medium mb-2">Confirm Password</label>
+            <input
+              type="password"
+              name="confirm_password"
+              placeholder="••••••••"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+          </div>
+
+          {/* Profile Photo */}
+          <div className="md:col-span-2">
+            <label className="block font-medium mb-2">Profile Photo URL</label>
+            <input
+              type="url"
+              name="photo"
+              placeholder="https://i.ibb.co/example.jpg"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          {/* Terms */}
+          <div className="flex items-center gap-3 md:col-span-2">
             <input
               type="checkbox"
               name="terms"
-              className="checkbox checkbox-primary"
+              className="w-5 h-5 accent-primary"
               required
             />
-            <span className="text-sm text-base-content/70">
+            <label className="font-medium">
               I agree to the{" "}
-              <a href="#" className="text-primary hover:underline">
+              <span className="text-primary underline cursor-pointer">
                 Terms & Conditions
-              </a>
-            </span>
+              </span>
+            </label>
           </div>
 
-          {/* Register button */}
-          <button
-            type="submit"
-            className="btn btn-primary w-full transition-all duration-300"
-          >
-            Register
-          </button>
+          {/* Submit Button */}
+          <div className="md:col-span-2 text-center mt-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              className="px-8 py-3 bg-primary cursor-pointer text-white font-semibold rounded-full shadow-lg hover:bg-primary/80 transition w-full"
+            >
+              Register
+            </motion.button>
+          </div>
         </form>
-
-        {/* Bottom link */}
-        <p className="text-center text-sm mt-6 text-base-content/70">
-          Already have an account?{" "}
-          <a href="/login" className="text-primary hover:underline font-medium">
-            Login here
-          </a>
-        </p>
-        {/* Google Sign-Up */}
-        <div className="divider text-base-content/60">OR</div>
-        <button
-          className="btn btn-outline w-full flex items-center justify-center gap-2 hover:border-primary hover:text-primary"
-          onClick={signWithGoogle}
-        >
-          <FcGoogle size={22} />
-          <span className="font-medium">Sign Up with Google</span>
-        </button>
-      </div>
-    </section>
+      </motion.div>
+    </div>
   );
 };
 
