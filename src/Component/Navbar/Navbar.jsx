@@ -7,11 +7,10 @@ import useAuth from "../../hooks/useAuth";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signOutUser } = useAuth();
-console.log(user);
+  console.log(user);
   const navItems = [
     { name: "Home", path: "/" },
     { name: "All Cars", path: "/all-cars" },
-    // 🔹 নিচেরগুলো শুধু তখনই দেখাবে যখন user থাকবে
     ...(user
       ? [
           { name: "Add Car", path: "/add-car" },
