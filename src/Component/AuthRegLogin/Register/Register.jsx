@@ -4,9 +4,10 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthContext/AuthContext";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Register = () => {
-  const { createUser } = use(AuthContext);
+  const { createUser, } = use(AuthContext);
   // const axiosSecure = useAxiosSecure();
 
   const navigate = useNavigate();
@@ -41,7 +42,12 @@ const Register = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        let errorMsg = error.message;
+        if (error.code === "auth/email-already-in-use") {
+          errorMsg =
+            "This email is already registered. Please use a different email or sign in.";
+        }
+        toast.error(errorMsg);
       });
   };
 

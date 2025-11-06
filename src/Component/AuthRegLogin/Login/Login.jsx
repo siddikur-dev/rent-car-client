@@ -1,7 +1,18 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../Provider/AuthContext/AuthContext";
 
 const Login = () => {
+  const { signInGoogle } = use(AuthContext);
+  const signInWithGoogle = () => {
+    signInGoogle()
+      .then((res) => {
+        toast.success("user login successfully");
+      })
+      .catch((error) => console.log(error));
+  };
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -116,7 +127,10 @@ const Login = () => {
         {/* Social Login (optional) */}
         <div className="flex flex-col gap-3">
           {/* Google */}
-          <button className="btn rounded-full bg-white text-black border-[#e5e5e5]">
+          <button
+            onClick={signInWithGoogle}
+            className="btn rounded-full bg-white text-black border-[#e5e5e5]"
+          >
             <svg
               aria-label="Google logo"
               width="16"
